@@ -77,7 +77,7 @@
       {% endcase %}
     </span>
     {%- render 'loading-spinner' -%}
-    <div class="product__media media media--transparent">
+    <div class="product__media media media--transparent" style="view-transition-name: product-media-{{- media.id -}}">
       {{
         media.preview_image
         | image_url: width: 1946
