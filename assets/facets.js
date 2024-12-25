@@ -30,32 +30,28 @@ class FacetFiltersForm extends HTMLElement {
   }
 
   static renderPage(searchParams, event, updateURLHash = true) {
-    FacetFiltersForm.searchParamsPrev = searchParams;
-    const sections = FacetFiltersForm.getSections();
-    const countContainer = document.getElementById('ProductCount');
-    const countContainerDesktop = document.getElementById('ProductCountDesktop');
-    const loadingSpinners = document.querySelectorAll(
-      '.facets-container .loading__spinner, facet-filters-form .loading__spinner'
-    );
-    loadingSpinners.forEach((spinner) => spinner.classList.remove('hidden'));
-    document.getElementById('ProductGridContainer').querySelector('.collection').classList.add('loading');
-    if (countContainer) {
-      countContainer.classList.add('loading');
+    const action = () => {
+      FacetFiltersForm.searchParamsPrev = searchParams;
+      const sections = FacetFiltersForm.getSections();
+
+      sections.forEach((section) => {
+        const url = `${window.location.pathname}?section_id=${section.section}&${searchParams}`;
+        const filterDataUrl = (element) => element.url === url;
+
+        FacetFiltersForm.filterData.some(filterDataUrl)
+          ? FacetFiltersForm.renderSectionFromCache(filterDataUrl, event)
+          : FacetFiltersForm.renderSectionFromFetch(url, event);
+      });
+
+      if (updateURLHash) FacetFiltersForm.updateURLHash(searchParams);
     }
-    if (countContainerDesktop) {
-      countContainerDesktop.classList.add('loading');
+
+    if (!document.startViewTransition) {
+      action();
+      return;
     }
 
-    sections.forEach((section) => {
-      const url = `${window.location.pathname}?section_id=${section.section}&${searchParams}`;
-      const filterDataUrl = (element) => element.url === url;
-
-      FacetFiltersForm.filterData.some(filterDataUrl)
-        ? FacetFiltersForm.renderSectionFromCache(filterDataUrl, event)
-        : FacetFiltersForm.renderSectionFromFetch(url, event);
-    });
-
-    if (updateURLHash) FacetFiltersForm.updateURLHash(searchParams);
+    document.startViewTransition(action);
   }
 
   static renderSectionFromFetch(url, event) {

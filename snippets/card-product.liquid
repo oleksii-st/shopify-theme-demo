@@ -161,7 +161,7 @@
               {{ card_product.title | escape }}
             </a>
           </h3>
-          <div class="card-information">
+          <div class="card-information" style="view-transition-name: product-card-information-{{- card_product.id -}}">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
               <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
