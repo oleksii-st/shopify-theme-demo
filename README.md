@@ -9,3 +9,6 @@ Command:
 - Development - `shopify theme dev`
 - Deployment - `shopify theme push`
 - More commands - [Link](https://shopify.dev/docs/api/shopify-cli/theme)
+
+Articles:
+- [How to use view transitions in Shopify store](https://oleksii-s.dev/blog/how-to-use-view-transitions-in-shopify-store) - [PR](https://github.com/oleksii-st/shopify-theme-demo/pull/1)
